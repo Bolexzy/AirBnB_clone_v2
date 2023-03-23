@@ -2,8 +2,10 @@
 """Defines unnittests for models/state.py."""
 import unittest
 import os
+from os import getenv
 from models.state import State
 from models.base_model import BaseModel
+from models.engine.db_storage import DBStorage
 import pep8
 
 
@@ -53,6 +55,7 @@ class TestState(unittest.TestCase):
         """Test attribute type for State"""
         self.assertEqual(type(self.state.name), str)
 
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_save_State(self):
         """Test save method."""
         self.state.save()

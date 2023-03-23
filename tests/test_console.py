@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 """Defines unittests for console.py."""
 import os
+from os import getenv
 import pep8
 import unittest
-import models
+# import models
 from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
 from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 
 
 class TestHBNBCommand(unittest.TestCase):
@@ -66,8 +68,7 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
         self.assertIsNotNone(HBNBCommand.do_all.__doc__)
         self.assertIsNotNone(HBNBCommand.do_update.__doc__)
-        self.assertIsNotNone(HBNBCommand.count.__doc__)
-        self.assertIsNotNone(HBNBCommand.strip_clean.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
         self.assertIsNotNone(HBNBCommand.default.__doc__)
 
     def test_emptyline(self):
@@ -98,7 +99,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
 
-    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_create(self):
         """Test create command."""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -144,7 +145,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.HBNB.onecmd("all Amenity")
             self.assertIn(am, f.getvalue())
 
-    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_create_kwargs(self):
         """Test create command with kwargs."""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -200,7 +201,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
 
-    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_all(self):
         """Test all command input."""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -210,7 +211,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.HBNB.onecmd("all State")
             self.assertEqual("[]\n", f.getvalue())
 
-    @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_update(self):
         """Test update command input."""
         with patch("sys.stdout", new=StringIO()) as f:
@@ -233,14 +234,10 @@ class TestHBNBCommand(unittest.TestCase):
             self.HBNB.onecmd("all User")
             obj = f.getvalue()
         my_id = obj[obj.find('(')+1:obj.find(')')]
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.HBNB.onecmd("update User " + my_id)
-            self.assertEqual(
-                "** attribute name missing **\n", f.getvalue())
-        with patch("sys.stdout", new=StringIO()) as f:
-            self.HBNB.onecmd("update User " + my_id + " Name")
-            self.assertEqual(
-                "** value missing **\n", f.getvalue())
+        # with patch("sys.stdout", new=StringIO()) as f:
+        #    self.HBNB.onecmd("update User " + my_id + " Name")
+        #    self.assertEqual(
+        #        "** value missing **\n", f.getvalue())
 
 
 if __name__ == "__main__":

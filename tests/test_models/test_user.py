@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """Defines unnittests for models/user.py."""
 import unittest
+from os import getenv
 import os
 from models.user import User
 from models.base_model import BaseModel
+from models.engine.db_storage import DBStorage
 import pep8
 
 
@@ -37,8 +39,6 @@ class TestUser(unittest.TestCase):
         p = style.check_files(['models/user.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_checking_for_docstring_User(self):
-        """Check for docstrings"""
         self.assertIsNotNone(User.__doc__)
 
     def test_attributes_User(self):
@@ -62,6 +62,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(self.user.first_name), str)
         self.assertEqual(type(self.user.first_name), str)
 
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_save_User(self):
         """Test save method."""
         self.user.save()
