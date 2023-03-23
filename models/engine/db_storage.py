@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-all_classes = {'City': City,
+all_classes = {'State': State, 'City': City,
                'User': User, 'Place': Place,
                'Review': Review, 'Amenity': Amenity}
 
@@ -51,7 +51,7 @@ class DBStorage:
         else:
             if cls in all_classes:
                 cls = all_classes[cls]
-            obj_list = self.__session.query(cls)
+                obj_list = self.__session.query(cls)
         return {"{}.{}".format(type(obj).__name__, obj.id):
                 obj for obj in obj_list}
 
