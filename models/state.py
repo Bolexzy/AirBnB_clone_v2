@@ -4,6 +4,8 @@ from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.orm import relationship
+import models
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -25,11 +27,9 @@ class State(BaseModel, Base):
             """Getter method for cities
             Return: list of cities with state_id equal to self.id
             """
-            from models import storage
-            from models.city import City
             city_list = []
 
-            for city in list(storage.all(City).values()):
+            for city in list(models.storage.all(City).values()):
                 if city.state_id == self.id:
                     city_list.append(city)
             return city_list
