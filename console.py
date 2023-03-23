@@ -227,6 +227,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 arg = line.split(' ')[0]  # remove possible trailing args
                 if arg not in HBNBCommand.classes:
+                    print(f'ag:{arg}')
                     raise NameError()
                 else:
                     cls = HBNBCommand.classes[arg]
