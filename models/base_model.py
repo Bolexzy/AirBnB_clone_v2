@@ -22,7 +22,12 @@ class BaseModel:
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Initialize a new BaseModel.
+
+        params:
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
+        """
         self.id = str(uuid.uuid4())
         self.created_at = self.updated_at = datetime.now()
         if kwargs:
