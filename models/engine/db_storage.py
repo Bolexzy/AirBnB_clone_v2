@@ -46,7 +46,7 @@ class DBStorage:
         """
         if cls is None:
             obj_list = []
-            for cls in all_classes.values:
+            for cls in all_classes.values():
                 obj_list.extend(self.__session.query(cls).all())
         else:
             if cls in all_classes:
