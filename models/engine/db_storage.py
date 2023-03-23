@@ -44,10 +44,8 @@ class DBStorage:
         Return:
             Dict of queried classes in the format <class name>.<obj id> = obj.
         """
-        obj_dict = {}
-
         if cls is None:
-            obj_list = self.__session.query(State).all()
+            obj_list = []
             for cls in all_classes.values:
                 obj_list.extend(self.__session.query(cls).all())
         else:
