@@ -8,7 +8,6 @@ from os import path
 
 env.hosts = ['52.87.251.218', '100.26.219.51']
 env.user = 'ubuntu'
-env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_pack():
@@ -44,7 +43,7 @@ def do_deploy(archive_path):
         # Upload the archive to /tmp/ directory on the web server
         put(archive_path, '/tmp/')
 
-        releases_path = "/data/web_static/releases/{}".format(fname)
+        releases_path = "/data/web_static/releases/{}/".format(fname)
         run("mkdir -p {}".format(releases_path))
 
         # uncompress archive and delete .tgz
@@ -52,8 +51,8 @@ def do_deploy(archive_path):
         run("sudo rm /tmp/{}".format(tgz_file))
 
         # Place web_static directory correctly
-        run("sudo mv {}/web_static/* {}/".format(releases_path, releases_path))
-        run("sudo rm -rf {}/web_static".format(releases_path))
+        run("sudo mv {}/web_static/* {}".format(releases_path, releases_path))
+        run("sudo rm -rf {}web_static".format(releases_path))
 
         # Delete the symbolic link /data/web_static/current if it exists
         run('sudo rm -rf /data/web_static/current')
