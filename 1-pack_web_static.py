@@ -13,9 +13,9 @@ def do_pack():
             local('mkdir versions')
         now = datetime.utcnow()
         ft = now.strftime("%Y%m%d%H%M%S")
-        archive_path = f"versions/web_static_{ft}.tgz"
-        local(f"tar -cvzf {archive_path}  web_static/")
+        archive_path = "versions/web_static_{}.tgz".format(ft)
+        local("tar -cvzf {}  web_static/".format(archive_path))
         return archive_path
     except Exception as e:
-        print(f"An exception occurred: {e}")
+        print("An exception occurred: {}".format(e))
         return None
