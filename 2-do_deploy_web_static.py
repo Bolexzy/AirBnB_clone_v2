@@ -49,19 +49,17 @@ def do_deploy(archive_path):
 
         # uncompress archive and delete .tgz
         run("sudo tar -xzf /tmp/{} -C {}".format(tgz_file, releases_path))
-        run("sudo rm -f /tmp/{}".format(tgz_file))
+        run("sudo rm /tmp/{}".format(tgz_file))
 
         # Place web_static directory correctly
         run("sudo mv {}/web_static/* {}/".format(releases_path, releases_path))
         run("sudo rm -rf {}/web_static".format(releases_path))
 
         # Delete the symbolic link /data/web_static/current if it exists
-        with cd('/data/web_static/'):
-            run('sudo rm -f current')
+        run('sudo rm -rf /data/web_static/current')
 
         # Create a new symbolic link /data/web_static/current
-        with cd('/data/web_static/'):
-            run('sudo ln -s releases/{}/ current'.format(fname))
+        run('sudo ln -s {} /data/web_static/current'.format(releases_path))
         print("New version deployed!")
         return True
     except Exception as e:
