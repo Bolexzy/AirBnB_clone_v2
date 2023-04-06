@@ -7,7 +7,8 @@ from fabric.api import *
 from os import path
 
 env.hosts = ['52.87.251.218', '100.26.219.51']
-env.user = "ubuntu"
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_pack():
@@ -45,20 +46,22 @@ def do_deploy(archive_path):
 
         releases_path = "/data/web_static/releases/{}".format(fname)
         run("mkdir -p {}".format(releases_path))
-        run("tar -xzf /tmp/{} -C {}".format(tgz_file, releases_path))
-        run("rm -f /tmp/{}".format(tgz_file))
+
+        # uncompress archive and delete .tgz
+        run("sudo tar -xzf /tmp/{} -C {}".format(tgz_file, releases_path))
+        run("sudo rm -f /tmp/{}".format(tgz_file))
 
         # Place web_static directory correctly
-        run("mv {}/web_static/* {}/".format(releases_path, releases_path))
-        run("rm -rf {}web_static".format(releases_path))
+        run("sudo mv {}/web_static/* {}/".format(releases_path, releases_path))
+        run("sudo rm -rf {}/web_static".format(releases_path))
 
         # Delete the symbolic link /data/web_static/current if it exists
         with cd('/data/web_static/'):
-            run('rm -f current')
+            run('sudo rm -f current')
 
         # Create a new symbolic link /data/web_static/current
         with cd('/data/web_static/'):
-            run('ln -s releases/{}/ current'.format(fname))
+            run('sudo ln -s releases/{}/ current'.format(fname))
         print("New version deployed!")
         return True
     except Exception as e:
