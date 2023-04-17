@@ -10,6 +10,8 @@ else
     echo "Nginx is already installed"
 fi
 
+sudo service nginx start
+
 sudo mkdir -p /data/
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
