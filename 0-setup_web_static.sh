@@ -27,9 +27,9 @@ ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 sudo chown -R ubuntu:ubuntu /data/
 
-new_string="server_name _;\n\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t\tindex index.html;\n\t}\n"
+# new_string="server_name _;\n\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t\tindex index.html;\n\t}\n"
 
-sed -i "s|server_name _;|${new_string}|" /etc/nginx/sites-available/default
+sed -i "s|server_name _;|server_name _;\n\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t\tindex index.html;\n\t}\n|" /etc/nginx/sites-available/default
 
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
